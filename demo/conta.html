@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificado de Ingresos - ContadorATuMedida.com</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<style>
+  :root {
+    --catm-navy: #002060;
+    --catm-cyan: #00d2ff;
+    --catm-gray: #6c757d;
+    --catm-light: #f8f9fa;
+    --catm-border: #e9ecef;
+    --catm-green: #198754;
+    --catm-red: #dc3545;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: #f0f2f5;
+    color: #212529;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .header {
+    background: #fff;
+    border-bottom: 1px solid var(--catm-border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo svg { width: 40px; height: 40px; }
+  .logo-text .main { font-size: 18px; font-weight: 700; color: var(--catm-navy); letter-spacing: 1px; }
+  .logo-text .sub { font-size: 11px; color: var(--catm-gray); letter-spacing: 2px; }
+  .logo-text .sub .dotcom { color: var(--catm-cyan); font-weight: 600; }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .container { grid-template-columns: 1fr; }
+  }
+
+  /* CARD */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--catm-border);
+    padding: 24px;
+  }
+  .card h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--catm-navy);
+    margin-bottom: 4px;
+  }
+  .card .subtitle {
+    font-size: 13px;
+    color: var(--catm-gray);
+    margin-bottom: 20px;
+  }
+
+  /* FORM */
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #212529;
+  }
+  .field label .req { color: var(--catm-red); }
+  .field input, .field select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid var(--catm-border);
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--catm-cyan);
+    box-shadow: 0 0 0 3px rgba(0,210,255,0.15);
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .hint {
+    font-size: 11px;
+    color: var(--catm-gray);
+    margin-top: 3px;
+  }
+
+  /* ALERTS */
+  .alert {
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .alert.info {
+    background: #e6f9ff;
+    border: 1px solid #b3f0ff;
+    color: var(--catm-navy);
+  }
+  .alert.warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+  }
+  .alert.success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+  }
+
+  /* PREVIEW BOX */
+  .preview-box {
+    border: 1px dashed var(--catm-cyan);
+    border-radius: 10px;
+    padding: 16px;
+    background: #f0fcff;
+    margin-bottom: 16px;
+  }
+  .preview-box h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--catm-navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .preview-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #e0f4ff;
+    font-size: 13px;
+  }
+  .preview-row:last-child { border-bottom: none; }
+  .preview-row .label { color: var(--catm-gray); }
+  .preview-row .value { font-weight: 500; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--catm-navy);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #001845; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary {
+    background: var(--catm-light);
+    color: #212529;
+    border: 1px solid var(--catm-border);
+  }
+  .btn-secondary:hover { background: #e9ecef; }
+
+  .form-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  /* PDF PREVIEW */
+  .pdf-preview {
+    background: #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 600px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: auto;
+  }
+  .pdf-page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    padding: 25mm 20mm;
+    position: relative;
+  }
+  .pdf-page * { font-family: 'Times New Roman', Georgia, serif; }
+
+  /* PDF CONTENT STYLES */
+  .pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 3px solid var(--catm-navy);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .pdf-logo-area { display: flex; align-items: center; gap: 10px; }
+  .pdf-logo-area svg { width: 36px; height: 36px; }
+  .pdf-logo-text .main { font-size: 14px; font-weight: 700; color: var(--catm-navy); letter-spacing: 1px; font-family: sans-serif; }
+  .pdf-logo-text .sub { font-size: 9px; color: var(--catm-gray); letter-spacing: 1.5px; font-family: sans-serif; }
+  .pdf-logo-text .sub .dotcom { color: var(--catm-cyan); font-weight: 600; }
+  .pdf-consec { text-align: right; }
+  .pdf-consec .num { font-size: 11px; color: var(--catm-gray); }
+  .pdf-consec .val { font-size: 14px; font-weight: 700; color: var(--catm-navy); }
+
+  .pdf-title {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .pdf-title h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--catm-navy);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .pdf-title .subt {
+    font-size: 11px;
+    color: var(--catm-gray);
+  }
+
+  .pdf-section {
+    margin-bottom: 16px;
+  }
+  .pdf-section h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--catm-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--catm-border);
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+  }
+  .pdf-row {
+    display: flex;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
+  .pdf-row .label {
+    width: 160px;
+    color: var(--catm-gray);
+    flex-shrink: 0;
+  }
+  .pdf-row .value {
+    font-weight: 600;
+    color: #212529;
+  }
+
+  .pdf-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+    font-size: 11px;
+  }
+  .pdf-table th {
+    background: var(--catm-navy);
+    color: #fff;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .pdf-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--catm-border);
+  }
+  .pdf-table tr:nth-child(even) { background: #f8f9fa; }
+  .pdf-table .total-row {
+    background: #e6f9ff !important;
+    font-weight: 700;
+  }
+  .pdf-table .total-row td { border-top: 2px solid var(--catm-cyan); }
+
+  .pdf-declaration {
+    background: #f8f9fa;
+    border-left: 3px solid var(--catm-navy);
+    padding: 12px 14px;
+    margin: 16px 0;
+    font-size: 10px;
+    line-height: 1.6;
+    color: #333;
+  }
+  .pdf-declaration strong { color: var(--catm-navy); }
+
+  .pdf-footer {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .pdf-signature {
+    text-align: center;
+    width: 200px;
+  }
+  .pdf-signature .line {
+    border-top: 1px solid #333;
+    padding-top: 4px;
+    font-size: 10px;
+    color: #333;
+  }
+  .pdf-signature .name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--catm-navy);
+    margin-top: 2px;
+  }
+  .pdf-signature .role {
+    font-size: 9px;
+    color: var(--catm-gray);
+  }
+  .pdf-qr {
+    text-align: center;
+  }
+  .pdf-qr-box {
+    width: 60px; height: 60px;
+    border: 1px solid var(--catm-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; color: var(--catm-gray);
+    margin: 0 auto 4px;
+  }
+
+  .pdf-legal {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--catm-border);
+    font-size: 8px;
+    color: var(--catm-gray);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .pdf-watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 48px;
+    color: rgba(0,210,255,0.06);
+    font-weight: 700;
+    pointer-events: none;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    z-index: 0;
+  }
+
+  /* STEPS */
+  .steps-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .step-pill {
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--catm-light);
+    color: var(--catm-gray);
+    border: 1px solid var(--catm-border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .step-pill.active {
+    background: var(--catm-navy);
+    color: #fff;
+    border-color: var(--catm-navy);
+  }
+  .step-pill.completed {
+    background: var(--catm-green);
+    color: #fff;
+    border-color: var(--catm-green);
+  }
+
+  .step-content { display: none; }
+  .step-content.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px);} to { opacity:1; transform:translateY(0);} }
+
+  /* SPINNER */
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--catm-border);
+    border-top-color: var(--catm-cyan);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .generating { text-align: center; padding: 40px; }
+  .generating p { color: var(--catm-gray); font-size: 14px; }
+
+  /* CHECKBOX */
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .checkbox-label input { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--catm-navy); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .pdf-page { transform: scale(0.55); transform-origin: top center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M65 15 A35 35 0 1 0 65 85" stroke="#002060" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <rect x="52" y="38" width="6" height="24" rx="3" fill="#e5e8ed"/>
+      <rect x="62" y="32" width="6" height="36" rx="3" fill="#002060"/>
+      <rect x="72" y="26" width="6" height="48" rx="3" fill="#00d2ff"/>
+    </svg>
+    <div class="logo-text">
+      <div class="main">CONTADOR</div>
+      <div class="sub">A TU MEDIDA<span class="dotcom">.COM</span></div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:var(--catm-gray);">Generador de certificados de ingresos</div>
+</div>
+
+<div class="container">
+  <!-- LEFT: FORM -->
+  <div>
+    <div class="steps-bar">
+      <div class="step-pill active" id="spill-1" onclick="goStep(1)">1. Datos</div>
+      <div class="step-pill" id="spill-2" onclick="goStep(2)">2. Ingresos</div>
+      <div class="step-pill" id="spill-3" onclick="goStep(3)">3. Descarga</div>
+    </div>
+
+    <div class="card">
+      <!-- STEP 1 -->
+      <div class="step-content active" id="scontent-1">
+        <h2>Datos del contador</h2>
+        <p class="subtitle">Información personal y profesional para el certificado.</p>
+
+        <div class="alert info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>Válido para contadores independientes con ingresos hasta <strong>3 SMMLV</strong> ($4.270.500 COP en 2026).</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Nombres <span class="req">*</span></label>
+            <input type="text" id="f-nombres" placeholder="Ej: Juan Carlos" value="Juan Carlos">
+          </div>
+          <div class="field">
+            <label>Apellidos <span class="req">*</span></label>
+            <input type="text" id="f-apellidos" placeholder="Ej: Rodríguez Pérez" value="Rodríguez Pérez">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Tipo documento <span class="req">*</span></label>
+            <select id="f-tipo-doc">
+              <option value="CC" selected>Cédula de ciudadanía</option>
+              <option value="CE">Cédula de extranjería</option>
+              <option value="PA">Pasaporte</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Número <span class="req">*</span></label>
+            <input type="text" id="f-num-doc" placeholder="Ej: 1.012.345.678" value="1.012.345.678">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Tarjeta profesional <span class="req">*</span></label>
+          <input type="text" id="f-tarjeta" placeholder="Ej: 123456-T" value="123456-T">
+          <p class="hint">Emitida por el CNA o entidad competente.</p>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Ciudad <span class="req">*</span></label>
+            <input type="text" id="f-ciudad" placeholder="Ej: Bogotá D.C." value="Bogotá D.C.">
+          </div>
+          <div class="field">
+            <label>Dirección <span class="req">*</span></label>
+            <input type="text" id="f-direccion" placeholder="Ej: Calle 123 # 45-67" value="Calle 123 # 45-67">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Correo electrónico <span class="req">*</span></label>
+          <input type="email" id="f-email" placeholder="Ej: juan@email.com" value="juan.rodriguez@email.com">
+        </div>
+
+        <div class="field">
+          <label>Teléfono <span class="req">*</span></label>
+          <input type="tel" id="f-telefono" placeholder="Ej: 300 123 4567" value="300 123 4567">
+        </div>
+
+        <div class="form-nav">
+          <div></div>
+          <button class="btn btn-primary" onclick="goStep(2)">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-content" id="scontent-2">
+        <h2>Información de ingresos</h2>
+        <p class="subtitle">Registra tus ingresos mensuales como contador independiente.</p>
+
+        <div class="alert info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>SMMLV 2026: <strong>$1.423.500 COP</strong> | Límite automático: <strong>3 SMMLV = $4.270.500 COP</strong></span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Mes 1 (último) <span class="req">*</span></label>
+            <input type="text" id="f-ing1" placeholder="$ 0" value="$ 1.800.000" oninput="fmt(this);calc()">
+          </div>
+          <div class="field">
+            <label>Mes 2 <span class="req">*</span></label>
+            <input type="text" id="f-ing2" placeholder="$ 0" value="$ 1.650.000" oninput="fmt(this);calc()">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Mes 3 <span class="req">*</span></label>
+            <input type="text" id="f-ing3" placeholder="$ 0" value="$ 1.900.000" oninput="fmt(this);calc()">
+          </div>
+          <div class="field">
+            <label>Mes 4 (opc.)</label>
+            <input type="text" id="f-ing4" placeholder="$ 0" value="$ 1.750.000" oninput="fmt(this);calc()">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Mes 5 (opc.)</label>
+            <input type="text" id="f-ing5" placeholder="$ 0" oninput="fmt(this);calc()">
+          </div>
+          <div class="field">
+            <label>Mes 6 (opc.)</label>
+            <input type="text" id="f-ing6" placeholder="$ 0" oninput="fmt(this);calc()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Meses a promediar <span class="req">*</span></label>
+          <select id="f-meses" onchange="calc()">
+            <option value="3">3 meses</option>
+            <option value="4" selected>4 meses</option>
+            <option value="5">5 meses</option>
+            <option value="6">6 meses</option>
+          </select>
+        </div>
+
+        <div class="preview-box">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M1 12s4-8 11-8 11 8 11 8"/></svg>
+            Cálculo automático
+          </h4>
+          <div class="preview-row"><span class="label">Total ingresos</span><span class="value" id="p-total">$ 7.100.000</span></div>
+          <div class="preview-row"><span class="label">Meses promediados</span><span class="value" id="p-meses">4</span></div>
+          <div class="preview-row"><span class="label">Promedio mensual</span><span class="value" id="p-prom">$ 1.775.000</span></div>
+          <div class="preview-row"><span class="label">Equivalente SMMLV</span><span class="value" id="p-smmlv">1.2 SMMLV</span></div>
+        </div>
+
+        <div id="warn-box" style="display:none">
+          <div class="alert warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>Tu ingreso supera 3 SMMLV. El certificado requiere <strong>revisión manual</strong> (hasta 24h hábiles).</span>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn btn-secondary" onclick="goStep(1)">← Atrás</button>
+          <button class="btn btn-primary" onclick="goStep(3)">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-content" id="scontent-3">
+        <h2>Revisa y descarga</h2>
+        <p class="subtitle">Verifica la información antes de generar el PDF.</p>
+
+        <div class="alert success">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>¡Listo! El certificado se generará con validez jurídica en Colombia.</span>
+        </div>
+
+        <div class="preview-box">
+          <h4>Resumen del certificado</h4>
+          <div class="preview-row"><span class="label">Contador</span><span class="value" id="r-nombre">—</span></div>
+          <div class="preview-row"><span class="label">Documento</span><span class="value" id="r-doc">—</span></div>
+          <div class="preview-row"><span class="label">Tarjeta profesional</span><span class="value" id="r-tarjeta">—</span></div>
+          <div class="preview-row"><span class="label">Ciudad</span><span class="value" id="r-ciudad">—</span></div>
+          <div class="preview-row"><span class="label">Ingreso promedio</span><span class="value" id="r-prom">—</span></div>
+          <div class="preview-row"><span class="label">Equivalente SMMLV</span><span class="value" id="r-smmlv">—</span></div>
+        </div>
+
+        <div class="field">
+          <label class="checkbox-label">
+            <input type="checkbox" id="f-declara" onchange="toggleGen()">
+            <span>Declaro bajo la gravedad del juramento que la información proporcionada es veraz y me responsabilizo de su contenido ante las autoridades competentes. <span class="req">*</span></span>
+          </label>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn btn-secondary" onclick="goStep(2)">← Atrás</button>
+          <button class="btn btn-primary" id="btn-gen" onclick="generarPDF()" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Generar y descargar PDF
+          </button>
+        </div>
+
+        <div id="gen-loading" class="generating" style="display:none">
+          <div class="spinner"></div>
+          <p>Generando certificado PDF...</p>
+        </div>
+
+        <div id="gen-done" style="display:none; margin-top:16px;">
+          <div class="alert success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>¡Certificado generado!</strong> El archivo PDF se ha descargado a tu dispositivo.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: PDF PREVIEW -->
+  <div>
+    <div class="pdf-preview" id="pdf-preview-area">
+      <div class="pdf-page" id="pdf-page">
+        <div class="pdf-watermark">VISTA PREVIA</div>
+
+        <div class="pdf-header">
+          <div class="pdf-logo-area">
+            <svg viewBox="0 0 100 100" fill="none" style="width:32px;height:32px;">
+              <path d="M65 15 A35 35 0 1 0 65 85" stroke="#002060" stroke-width="10" stroke-linecap="round" fill="none"/>
+              <rect x="52" y="38" width="6" height="24" rx="3" fill="#e5e8ed"/>
+              <rect x="62" y="32" width="6" height="36" rx="3" fill="#002060"/>
+              <rect x="72" y="26" width="6" height="48" rx="3" fill="#00d2ff"/>
+            </svg>
+            <div class="pdf-logo-text">
+              <div class="main">CONTADOR</div>
+              <div class="sub">A TU MEDIDA<span class="dotcom">.COM</span></div>
+            </div>
+          </div>
+          <div class="pdf-consec">
+            <div class="num">Certificado No.</div>
+            <div class="val" id="pdf-consec">CATM-2026-000001</div>
+          </div>
+        </div>
+
+        <div class="pdf-title">
+          <h1>Certificado de Ingresos</h1>
+          <div class="subt">Para contadores independientes — República de Colombia</div>
+        </div>
+
+        <div class="pdf-section">
+          <h3>1. Datos del declarante</h3>
+          <div class="pdf-row"><span class="label">Nombre completo:</span><span class="value" id="pdf-nombre">Juan Carlos Rodríguez Pérez</span></div>
+          <div class="pdf-row"><span class="label">Documento de identidad:</span><span class="value" id="pdf-doc">CC 1.012.345.678</span></div>
+          <div class="pdf-row"><span class="label">Tarjeta profesional:</span><span class="value" id="pdf-tarjeta">123456-T</span></div>
+          <div class="pdf-row"><span class="label">Ciudad de residencia:</span><span class="value" id="pdf-ciudad">Bogotá D.C.</span></div>
+          <div class="pdf-row"><span class="label">Dirección:</span><span class="value" id="pdf-direccion">Calle 123 # 45-67</span></div>
+          <div class="pdf-row"><span class="label">Correo electrónico:</span><span class="value" id="pdf-email">juan.rodriguez@email.com</span></div>
+          <div class="pdf-row"><span class="label">Teléfono:</span><span class="value" id="pdf-telefono">300 123 4567</span></div>
+        </div>
+
+        <div class="pdf-section">
+          <h3>2. Detalle de ingresos mensuales</h3>
+          <table class="pdf-table">
+            <thead>
+              <tr><th>Período</th><th>Monto (COP)</th><th>Concepto</th></tr>
+            </thead>
+            <tbody id="pdf-table-body">
+              <tr><td>Julio 2026</td><td>$ 1.800.000</td><td>Servicios profesionales de contaduría</td></tr>
+              <tr><td>Junio 2026</td><td>$ 1.650.000</td><td>Servicios profesionales de contaduría</td></tr>
+              <tr><td>Mayo 2026</td><td>$ 1.900.000</td><td>Servicios profesionales de contaduría</td></tr>
+              <tr><td>Abril 2026</td><td>$ 1.750.000</td><td>Servicios profesionales de contaduría</td></tr>
+              <tr class="total-row"><td><strong>Promedio mensual</strong></td><td><strong id="pdf-prom">$ 1.775.000</strong></td><td><strong id="pdf-smmlv">1.2 SMMLV</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pdf-section">
+          <h3>3. Declaración juramentada</h3>
+          <div class="pdf-declaration">
+            <p>Yo, <strong id="pdf-decl-nombre">Juan Carlos Rodríguez Pérez</strong>, identificado(a) con <strong id="pdf-decl-doc">CC 1.012.345.678</strong>, en mi calidad de <strong>Contador(a) Público(a) Independiente</strong>, con tarjeta profesional No. <strong id="pdf-decl-tarjeta">123456-T</strong>, declaro bajo la gravedad del juramento que:</p>
+            <p style="margin-top:6px;">1. Los ingresos aquí consignados corresponden a honorarios percibidos por prestación de servicios profesionales de contaduría pública durante los últimos <strong id="pdf-decl-meses">4</strong> meses.</p>
+            <p style="margin-top:4px;">2. La información es veraz, exacta y refleja fielmente mi situación económica real.</p>
+            <p style="margin-top:4px;">3. Mi ingreso mensual promedio asciende a <strong id="pdf-decl-prom">$ 1.775.000 COP</strong>, equivalente a <strong id="pdf-decl-smmlv">1.2 SMMLV</strong>.</p>
+            <p style="margin-top:4px;">4. En caso de superar los 3 SMMLV ($4.270.500 COP), este certificado queda sujeto a revisión por parte del emisor.</p>
+            <p style="margin-top:4px;">5. Me responsabilizo de la veracidad de los datos ante las autoridades competentes.</p>
+          </div>
+        </div>
+
+        <div class="pdf-footer">
+          <div class="pdf-signature">
+            <div class="line">_________________________________</div>
+            <div class="name" id="pdf-firma-nombre">Juan Carlos Rodríguez Pérez</div>
+            <div class="role">Contador(a) Público(a) Independiente</div>
+            <div class="role">CC 1.012.345.678</div>
+          </div>
+          <div class="pdf-qr">
+            <div class="pdf-qr-box">QR<br>Validación</div>
+            <div style="font-size:8px;color:var(--catm-gray);">Escanea para verificar</div>
+          </div>
+          <div style="text-align:right;font-size:10px;color:var(--catm-gray);">
+            <div>Fecha de emisión:</div>
+            <div style="font-weight:600;color:#212529;" id="pdf-fecha">3 de agosto de 2026</div>
+            <div style="margin-top:4px;">Ciudad:</div>
+            <div style="font-weight:600;color:#212529;" id="pdf-fecha-ciudad">Bogotá D.C.</div>
+          </div>
+        </div>
+
+        <div class="pdf-legal">
+          <strong>Marco jurídico:</strong> Decreto Único Reglamentario 1079/2015 (Sector Tributario), Ley 1607/2012, Resolución DIAN 000013/2021.<br>
+          Salario mínimo legal mensual vigente 2026: $1.423.500 COP | 3 SMMLV = $4.270.500 COP.<br>
+          Este certificado tiene validez para fines informativos ante entidades bancarias, fondos de empleados y administrativas.<br>
+          ContadorATuMedida.com — Certificado No. <span id="pdf-legal-consec">CATM-2026-000001</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SMMLV = 1423500;
+const LIMITE = 3;
+let currentStep = 1;
+
+function goStep(s) {
+  if (s === 2 && currentStep === 1) {
+    const req = ['f-nombres','f-apellidos','f-tipo-doc','f-num-doc','f-tarjeta','f-ciudad','f-direccion','f-email','f-telefono'];
+    for (let id of req) {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) { el.focus(); el.style.borderColor = '#dc3545'; setTimeout(()=>el.style.borderColor='',1500); return; }
+    }
+  }
+  if (s === 3 && currentStep === 2) {
+    const req2 = ['f-ing1','f-ing2','f-ing3'];
+    for (let id of req2) {
+      const el = document.getElementById(id);
+      const v = parseCur(el.value);
+      if (isNaN(v) || v <= 0) { el.focus(); el.style.borderColor = '#dc3545'; setTimeout(()=>el.style.borderColor='',1500); return; }
+    }
+  }
+
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('scontent-' + i).classList.remove('active');
+    const pill = document.getElementById('spill-' + i);
+    pill.classList.remove('active','completed');
+    if (i < s) pill.classList.add('completed');
+    else if (i === s) pill.classList.add('active');
+  }
+  document.getElementById('scontent-' + s).classList.add('active');
+  currentStep = s;
+
+  if (s === 3) fillResumen();
+  if (s === 2) calc();
+}
+
+function fmt(el) {
+  let v = el.value.replace(/[^\d]/g, '');
+  if (!v) { el.value = ''; return; }
+  el.value = '$ ' + parseInt(v,10).toLocaleString('es-CO');
+}
+function parseCur(s) { return parseInt((s||'').replace(/[^\d]/g,''),10) || 0; }
+
+function calc() {
+  const meses = parseInt(document.getElementById('f-meses').value) || 3;
+  let total = 0, count = 0;
+  for (let i = 1; i <= 6; i++) {
+    const v = parseCur(document.getElementById('f-ing' + i).value);
+    if (v > 0) { total += v; count++; }
+  }
+  const real = Math.min(count, meses);
+  const prom = real > 0 ? Math.round(total / real) : 0;
+  const smmlv = (prom / SMMLV).toFixed(1);
+
+  document.getElementById('p-total').textContent = '$ ' + total.toLocaleString('es-CO');
+  document.getElementById('p-meses').textContent = real;
+  document.getElementById('p-prom').textContent = '$ ' + prom.toLocaleString('es-CO');
+  document.getElementById('p-smmlv').textContent = smmlv + ' SMMLV';
+
+  document.getElementById('warn-box').style.display = parseFloat(smmlv) > LIMITE ? 'block' : 'none';
+
+  // Update PDF preview
+  updatePDFPreview(prom, smmlv, real);
+}
+
+function updatePDFPreview(prom, smmlv, meses) {
+  const nombres = document.getElementById('f-nombres').value + ' ' + document.getElementById('f-apellidos').value;
+  const tipo = document.getElementById('f-tipo-doc').value;
+  const num = document.getElementById('f-num-doc').value;
+  const tarjeta = document.getElementById('f-tarjeta').value;
+  const ciudad = document.getElementById('f-ciudad').value;
+  const direccion = document.getElementById('f-direccion').value;
+  const email = document.getElementById('f-email').value;
+  const telefono = document.getElementById('f-telefono').value;
+
+  document.getElementById('pdf-nombre').textContent = nombres;
+  document.getElementById('pdf-doc').textContent = (tipo==='CC'?'CC ':tipo==='CE'?'CE ':'PA ') + num;
+  document.getElementById('pdf-tarjeta').textContent = tarjeta;
+  document.getElementById('pdf-ciudad').textContent = ciudad;
+  document.getElementById('pdf-direccion').textContent = direccion;
+  document.getElementById('pdf-email').textContent = email;
+  document.getElementById('pdf-telefono').textContent = telefono;
+  document.getElementById('pdf-firma-nombre').textContent = nombres;
+  document.getElementById('pdf-fecha-ciudad').textContent = ciudad;
+
+  document.getElementById('pdf-prom').textContent = '$ ' + prom.toLocaleString('es-CO');
+  document.getElementById('pdf-smmlv').textContent = smmlv + ' SMMLV';
+
+  document.getElementById('pdf-decl-nombre').textContent = nombres;
+  document.getElementById('pdf-decl-doc').textContent = (tipo==='CC'?'CC ':tipo==='CE'?'CE ':'PA ') + num;
+  document.getElementById('pdf-decl-tarjeta').textContent = tarjeta;
+  document.getElementById('pdf-decl-meses').textContent = meses;
+  document.getElementById('pdf-decl-prom').textContent = '$ ' + prom.toLocaleString('es-CO') + ' COP';
+  document.getElementById('pdf-decl-smmlv').textContent = smmlv + ' SMMLV';
+
+  // Update table
+  const tbody = document.getElementById('pdf-table-body');
+  const mesesNombres = ['Julio 2026','Junio 2026','Mayo 2026','Abril 2026','Marzo 2026','Febrero 2026'];
+  let html = '';
+  for (let i = 1; i <= 6; i++) {
+    const v = parseCur(document.getElementById('f-ing' + i).value);
+    if (v > 0) {
+      html += '<tr><td>' + mesesNombres[i-1] + '</td><td>$ ' + v.toLocaleString('es-CO') + '</td><td>Servicios profesionales de contaduría</td></tr>';
+    }
+  }
+  html += '<tr class="total-row"><td><strong>Promedio mensual</strong></td><td><strong>$ ' + prom.toLocaleString('es-CO') + '</strong></td><td><strong>' + smmlv + ' SMMLV</strong></td></tr>';
+  tbody.innerHTML = html;
+}
+
+function fillResumen() {
+  const nombres = document.getElementById('f-nombres').value + ' ' + document.getElementById('f-apellidos').value;
+  const tipo = document.getElementById('f-tipo-doc').value;
+  const num = document.getElementById('f-num-doc').value;
+  const tarjeta = document.getElementById('f-tarjeta').value;
+  const ciudad = document.getElementById('f-ciudad').value;
+
+  const meses = parseInt(document.getElementById('f-meses').value) || 3;
+  let total = 0, count = 0;
+  for (let i = 1; i <= 6; i++) {
+    const v = parseCur(document.getElementById('f-ing' + i).value);
+    if (v > 0) { total += v; count++; }
+  }
+  const real = Math.min(count, meses);
+  const prom = real > 0 ? Math.round(total / real) : 0;
+  const smmlv = (prom / SMMLV).toFixed(1);
+
+  document.getElementById('r-nombre').textContent = nombres;
+  document.getElementById('r-doc').textContent = (tipo==='CC'?'CC ':tipo==='CE'?'CE ':'PA ') + num;
+  document.getElementById('r-tarjeta').textContent = tarjeta;
+  document.getElementById('r-ciudad').textContent = ciudad;
+  document.getElementById('r-prom').textContent = '$ ' + prom.toLocaleString('es-CO');
+  document.getElementById('r-smmlv').textContent = smmlv + ' SMMLV';
+}
+
+function toggleGen() {
+  document.getElementById('btn-gen').disabled = !document.getElementById('f-declara').checked;
+}
+
+function generarPDF() {
+  document.getElementById('btn-gen').style.display = 'none';
+  document.getElementById('gen-loading').style.display = 'block';
+
+  setTimeout(() => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'letter' });
+
+    const navy = '#002060';
+    const cyan = '#00d2ff';
+    const gray = '#6c757d';
+
+    // Header
+    doc.setFillColor(0, 32, 96);
+    doc.rect(0, 0, 216, 25, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CONTADOR A TU MEDIDA.COM', 15, 12);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Certificado de Ingresos — Contadores Independientes', 15, 18);
+
+    doc.setTextColor(0, 210, 255);
+    doc.setFontSize(10);
+    doc.text('Cert. No. CATM-2026-' + String(Math.floor(Math.random()*900000)+100000), 160, 12);
+
+    // Title
+    doc.setTextColor(0, 32, 96);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CERTIFICADO DE INGRESOS', 108, 38, { align: 'center' });
+    doc.setFontSize(10);
+    doc.setTextColor(gray);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Para contadores independientes — República de Colombia', 108, 44, { align: 'center' });
+
+    // Section 1
+    doc.setTextColor(navy);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text('1. DATOS DEL DECLARANTE', 15, 55);
+    doc.setDrawColor(0, 210, 255);
+    doc.line(15, 57, 201, 57);
+
+    const nombres = document.getElementById('f-nombres').value + ' ' + document.getElementById('f-apellidos').value;
+    const tipo = document.getElementById('f-tipo-doc').value;
+    const num = document.getElementById('f-num-doc').value;
+    const tarjeta = document.getElementById('f-tarjeta').value;
+    const ciudad = document.getElementById('f-ciudad').value;
+    const direccion = document.getElementById('f-direccion').value;
+    const email = document.getElementById('f-email').value;
+    const telefono = document.getElementById('f-telefono').value;
+
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    const datos = [
+      ['Nombre completo:', nombres],
+      ['Documento de identidad:', (tipo==='CC'?'CC ':tipo==='CE'?'CE ':'PA ') + num],
+      ['Tarjeta profesional:', tarjeta],
+      ['Ciudad de residencia:', ciudad],
+      ['Dirección:', direccion],
+      ['Correo electrónico:', email],
+      ['Teléfono:', telefono]
+    ];
+    let y = 64;
+    for (let [label, val] of datos) {
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(gray);
+      doc.text(label, 15, y);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(30, 30, 30);
+      doc.text(val, 70, y);
+      y += 6;
+    }
+
+    // Section 2
+    y += 4;
+    doc.setTextColor(navy);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text('2. DETALLE DE INGRESOS MENSUALES', 15, y);
+    doc.line(15, y+2, 201, y+2);
+
+    const mesesVal = parseInt(document.getElementById('f-meses').value) || 3;
+    let total = 0, count = 0;
+    const mesesNombres = ['Julio 2026','Junio 2026','Mayo 2026','Abril 2026','Marzo 2026','Febrero 2026'];
+    const tableBody = [];
+    for (let i = 1; i <= 6; i++) {
+      const v = parseCur(document.getElementById('f-ing' + i).value);
+      if (v > 0) { tableBody.push([mesesNombres[i-1], '$ ' + v.toLocaleString('es-CO'), 'Servicios profesionales de contaduría']); total += v; count++; }
+    }
+    const real = Math.min(count, mesesVal);
+    const prom = real > 0 ? Math.round(total / real) : 0;
+    const smmlv = (prom / SMMLV).toFixed(1);
+    tableBody.push([{content: 'Promedio mensual', styles: {fontStyle: 'bold'}}, {content: '$ ' + prom.toLocaleString('es-CO'), styles: {fontStyle: 'bold'}}, {content: smmlv + ' SMMLV', styles: {fontStyle: 'bold'}}]);
+
+    doc.autoTable({
+      startY: y + 6,
+      head: [['Período', 'Monto (COP)', 'Concepto']],
+      body: tableBody,
+      theme: 'grid',
+      headStyles: { fillColor: [0, 32, 96], textColor: 255, fontStyle: 'bold', fontSize: 10 },
+      bodyStyles: { fontSize: 9, textColor: 40 },
+      alternateRowStyles: { fillColor: [248, 249, 250] },
+      columnStyles: { 0: { cellWidth: 45 }, 1: { cellWidth: 50 }, 2: { cellWidth: 'auto' } },
+      margin: { left: 15, right: 15 }
+    });
+
+    // Section 3
+    let y3 = doc.lastAutoTable.finalY + 10;
+    doc.setTextColor(navy);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text('3. DECLARACIÓN JURAMENTADA', 15, y3);
+    doc.line(15, y3+2, 201, y3+2);
+
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(50, 50, 50);
+    const declText = `Yo, ${nombres}, identificado(a) con ${tipo==='CC'?'CC ':tipo==='CE'?'CE ':'PA '}${num}, en mi calidad de Contador(a) Público(a) Independiente, con tarjeta profesional No. ${tarjeta}, declaro bajo la gravedad del juramento que:
+
+1. Los ingresos aquí consignados corresponden a honorarios percibidos por prestación de servicios profesionales de contaduría pública durante los últimos ${real} meses.
+2. La información es veraz, exacta y refleja fielmente mi situación económica real.
+3. Mi ingreso mensual promedio asciende a $ ${prom.toLocaleString('es-CO')} COP, equivalente a ${smmlv} SMMLV.
+4. En caso de superar los 3 SMMLV ($4.270.500 COP), este certificado queda sujeto a revisión por parte del emisor.
+5. Me responsabilizo de la veracidad de los datos ante las autoridades competentes.`;
+
+    doc.text(declText, 15, y3 + 8, { maxWidth: 186, lineHeightFactor: 1.4 });
+
+    // Footer
+    let yf = 250;
+    doc.setDrawColor(100, 100, 100);
+    doc.line(15, yf, 90, yf);
+    doc.setFontSize(9);
+    doc.setTextColor(30, 30, 30);
+    doc.setFont('helvetica', 'bold');
+    doc.text(nombres, 52, yf + 5, { align: 'center' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(gray);
+    doc.text('Contador(a) Público(a) Independiente', 52, yf + 9, { align: 'center' });
+    doc.text((tipo==='CC'?'CC ':tipo==='CE'?'CE ':'PA ') + num, 52, yf + 13, { align: 'center' });
+
+    doc.setFontSize(8);
+    doc.text('Fecha de emisión: ' + new Date().toLocaleDateString('es-CO', {year:'numeric', month:'long', day:'numeric'}), 160, yf + 5, { align: 'center' });
+    doc.text('Ciudad: ' + ciudad, 160, yf + 9, { align: 'center' });
+
+    // Legal footer
+    doc.setFontSize(7);
+    doc.setTextColor(gray);
+    doc.text('Marco jurídico: Decreto Único Reglamentario 1079/2015, Ley 1607/2012, Resolución DIAN 000013/2021.', 108, 275, { align: 'center' });
+    doc.text('Salario mínimo legal mensual vigente 2026: $1.423.500 COP | 3 SMMLV = $4.270.500 COP', 108, 278, { align: 'center' });
+    doc.text('Este certificado tiene validez para fines informativos ante entidades bancarias, fondos de empleados y administrativas.', 108, 281, { align: 'center' });
+
+    // Save
+    doc.save('Certificado_Ingresos_' + num.replace(/[^0-9]/g,'') + '.pdf');
+
+    document.getElementById('gen-loading').style.display = 'none';
+    document.getElementById('gen-done').style.display = 'block';
+  }, 1500);
+}
+
+// Init
+calc();
+</script>
+</body>
+</html>
