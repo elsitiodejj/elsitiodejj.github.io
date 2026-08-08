@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>John Garzón · Ebook Ejecutivo Interactivo</title>
+<link rel="icon" type="image/x-icon" href="https://elsitiodejj.github.io/imagen/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://elsitiodejj.github.io">
+<link rel="dns-prefetch" href="https://elsitiodejj.github.io">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --text-main:#1B2A47;
+  --text-muted:#64748B;
+  --bg1:#FFFFFF;
+  --bg2:#F2F4F7;
+  --bg3:#EAEDF2;
+  --border-soft:rgba(27,42,71,.09);
+  --navy:#1E3A5F;
+  --navy-light:#2C4A73;
+  --navy-deep:#16233F;
+  --silver:#94A3B8;
+  --navy-grad-1:linear-gradient(135deg,#1E3A5F,#4A6690);
+  --navy-grad-2:linear-gradient(135deg,#24406B,#6B84A3);
+  --navy-grad-3:linear-gradient(135deg,#1B2A47,#94A3B8);
+  --navy-grad-4:linear-gradient(135deg,#16233F,#3B5A80);
+  --gold:#B08D57;
+  --page-w:min(100vw,440px);
+  --page-h:100vh;
+  --serif:'Playfair Display',serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --brand-font:'Comfortaa',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+html,body{height:100%;overscroll-behavior:none;}
+body{
+  font-family:var(--sans);
+  background:#0F1B2E;
+  color:var(--text-main);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 20% 15%,rgba(148,163,184,.18),transparent 55%),
+    radial-gradient(circle at 85% 85%,rgba(30,58,95,.55),transparent 60%),
+    linear-gradient(160deg,#0B1524,#182C46 55%,#0B1524);
+  z-index:0;
+}
+h1,h2,h3,h4,h5{font-family:var(--serif);font-weight:700;letter-spacing:.2px;}
+::selection{background:var(--navy);color:#fff;}
+button{font-family:inherit;border:none;background:none;cursor:pointer;}
+a{color:inherit;text-decoration:none;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:rgba(27,42,71,.22);border-radius:10px;}
+
+/* ============ INTRO / KINETIC LOADER ============ */
+#introLoader{
+  position:fixed;inset:0;z-index:999;
+  background:radial-gradient(circle at 50% 42%,#182C46,#0B1524 72%);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .7s ease;
+}
+.intro-stage{perspective:1400px;width:220px;height:300px;position:relative;display:flex;align-items:center;justify-content:center;}
+.intro-book{
+  width:190px;height:264px;position:relative;
+  transform-style:preserve-3d;
+  transform:scale(.04) rotateY(0deg) rotateX(8deg);
+  opacity:0;
+  animation:bookGrow 1.55s cubic-bezier(.2,.75,.25,1) forwards,
+            bookOpen 1.05s cubic-bezier(.6,0,.3,1) 1.55s forwards;
+}
+@keyframes bookGrow{
+  0%{transform:scale(.04) rotateY(0deg) rotateX(10deg);opacity:0;}
+  8%{opacity:1;}
+  70%{transform:scale(1.06) rotateY(760deg) rotateX(4deg);}
+  100%{transform:scale(1) rotateY(900deg) rotateX(0deg);}
+}
+@keyframes bookOpen{
+  0%{transform:scale(1) rotateY(900deg) rotateX(0deg);}
+  100%{transform:scale(1.35) rotateY(918deg) rotateX(0deg) translateY(-4px);}
+}
+.intro-cover{
+  position:absolute;inset:0;
+  border-radius:6px;
+  background:var(--navy-grad-3);
+  box-shadow:0 30px 70px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;padding:18px;text-align:center;
+  backface-visibility:hidden;
+}
+.intro-cover::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:14px;
+  background:linear-gradient(90deg,rgba(0,0,0,.45),transparent);
+  border-radius:6px 0 0 6px;
+}
+.intro-cover img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.55);}
+.intro-cover h2{color:#fff;font-size:19px;line-height:1.15;}
+.intro-cover p{color:#C7D2E0;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;}
+.intro-cover span{color:var(--silver);font-family:var(--brand-font);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;}
+.intro-spark{
+  position:absolute;inset:-40px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.14),transparent 65%);
+  opacity:0;animation:sparkPulse 1.55s ease forwards;
+}
+@keyframes sparkPulse{0%{opacity:0;}55%{opacity:1;}100%{opacity:0;}}
+#introLoader.hide{opacity:0;pointer-events:none;}
+.intro-hint{
+  position:absolute;bottom:9%;left:0;right:0;text-align:center;color:var(--silver);
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0;
+  animation:hintIn .6s ease 2.75s forwards;
+}
+
+/* ============ APP SHELL / BOOK FRAME ============ */
+#appShell{position:relative;z-index:1;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .5s ease;}
+#appShell.ready{opacity:1;}
+
+.book{
+  position:relative;
+  width:var(--page-w);
+  height:100vh;
+  height:100dvh;
+  background:var(--bg1);
+  overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,.5);
+  border:1px solid rgba(255,255,255,.06);
+}
+@media (min-width:481px){
+  .book{
+    max-height:900px;
+    border-radius:30px;
+    border:8px solid #0e1524;
+    box-shadow:0 45px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
+  }
+}
+
+.pages{position:absolute;inset:0;transform-style:preserve-3d;}
+.page{
+  position:absolute;inset:0;
+  background:var(--bg1);
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+  transform-origin:left center;
+  transition:transform .95s cubic-bezier(.65,0,.24,1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.page.flipped{transform:rotateY(-178deg);}
+.page::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:22px;z-index:5;pointer-events:none;
+  background:linear-gradient(90deg,rgba(20,30,50,.14),transparent);
+}
+.page-scroll{flex:1;overflow-y:auto;padding:26px 22px 100px;-webkit-overflow-scrolling:touch;}
+.page-scroll::-webkit-scrollbar{display:none;}
+
+/* nav zones */
+.nav-zone{
+  position:absolute;top:0;bottom:0;width:15%;z-index:60;
+  display:flex;align-items:center;
+  color:rgba(27,42,71,.28);font-size:15px;
+  transition:color .25s ease, background .25s ease;
+}
+.nav-left{left:0;justify-content:flex-start;padding-left:6px;background:linear-gradient(90deg,rgba(27,42,71,.05),transparent);}
+.nav-right{right:0;justify-content:flex-end;padding-right:6px;background:linear-gradient(270deg,rgba(27,42,71,.05),transparent);}
+.nav-zone:active{color:rgba(27,42,71,.6);}
+.nav-zone i{filter:drop-shadow(0 1px 1px rgba(255,255,255,.6));}
+
+/* progress */
+.book-progress{
+  position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--bg3);z-index:55;
+}
+.book-progress-bar{height:100%;background:var(--navy-grad-1);transition:width .5s ease;}
+
+/* ============ COVER PAGE ============ */
+.cover-page{
+  background:var(--navy-grad-3);
+  align-items:center;justify-content:center;text-align:center;color:#fff;
+  padding:8% 9%;position:relative;
+}
+.cover-page::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.12),transparent 55%);
+}
+.cover-frame{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.cover-photo{
+  width:clamp(96px,26vw,132px);height:clamp(96px,26vw,132px);border-radius:50%;
+  border:3px solid rgba(255,255,255,.75);object-fit:cover;
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+}
+.cover-brand{font-family:var(--brand-font);text-transform:uppercase;letter-spacing:3px;font-size:clamp(11px,3vw,13px);color:var(--silver);}
+.cover-name{font-size:clamp(30px,9vw,42px);line-height:1.06;color:#fff;}
+.cover-role{font-size:clamp(12px,3.4vw,14px);letter-spacing:2.6px;text-transform:uppercase;color:#DDE5EF;font-weight:600;font-family:var(--sans);}
+.cover-divider{width:46px;height:2px;background:var(--silver);opacity:.6;}
+.cover-tag{font-size:13px;color:#C7D2E0;max-width:280px;line-height:1.5;font-family:var(--sans);}
+.cover-swipe{
+  position:absolute;bottom:7%;left:0;right:0;text-align:center;color:#C7D2E0;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.cover-swipe i{animation:swipeBounce 1.6s ease-in-out infinite;}
+@keyframes swipeBounce{0%,100%{transform:translateX(0);}50%{transform:translateX(6px);}}
+
+/* ============ GENERIC PAGE HEADER ============ */
+.page-eyebrow{
+  display:flex;flex-direction:column;gap:3px;margin-bottom:20px;padding-top:6px;
+}
+.page-eyebrow .num{font-family:var(--sans);font-size:11px;letter-spacing:2px;color:var(--silver);text-transform:uppercase;font-weight:700;}
+.page-eyebrow h2{font-size:clamp(24px,7vw,30px);color:var(--text-main);}
+.page-eyebrow p{font-family:var(--sans);color:var(--text-muted);font-size:13px;margin-top:2px;}
+
+.lead{font-size:14.5px;line-height:1.65;color:var(--text-main);margin-bottom:18px;}
+.block-title{font-family:var(--serif);font-size:16px;color:var(--navy);margin:20px 0 8px;display:flex;align-items:center;gap:8px;}
+.block-title i{font-size:13px;color:var(--gold);}
+ul.info-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:6px;}
+ul.info-list li{font-size:13px;line-height:1.55;color:var(--text-main);padding-left:16px;position:relative;}
+ul.info-list li::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--navy);}
+ul.info-list li strong{color:var(--navy-deep);}
+
+.mini-card{
+  background:var(--bg2);border:1px solid var(--border-soft);border-radius:16px;
+  padding:14px 16px;margin-bottom:10px;
+}
+.mini-card h5{font-family:var(--sans);font-size:13.5px;color:var(--navy-deep);display:flex;align-items:center;gap:8px;margin-bottom:6px;font-weight:700;}
+.mini-card h5 i{color:var(--gold);width:16px;text-align:center;}
+.mini-card p{font-size:12.5px;line-height:1.55;color:var(--text-muted);}
+.mini-card p strong{color:var(--text-main);}
+
+/* timeline */
+.tl{display:flex;flex-direction:column;gap:0;position:relative;padding-left:20px;margin-top:4px;}
+.tl::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--bg3);}
+.tl-row{position:relative;padding:0 0 20px 16px;}
+.tl-row::before{content:'';position:absolute;left:-19px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--navy-grad-1);box-shadow:0 0 0 3px var(--bg1);}
+.tl-row .yr{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;color:#fff;background:var(--navy-grad-1);padding:2px 9px;border-radius:20px;margin-bottom:5px;}
+.tl-row .ttl{display:block;font-size:13.5px;font-weight:700;color:var(--text-main);line-height:1.4;}
+.tl-row .sub{display:block;font-size:12px;color:var(--text-muted);margin-top:3px;}
+.tl-row .desc{font-size:12.5px;line-height:1.55;color:var(--text-main);margin-top:6px;}
+.tl-row .desc strong{color:var(--navy-deep);}
+
+/* badges / invest cards */
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px;}
+.badge{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--bg3);color:var(--navy-deep);border:1px solid var(--border-soft);}
+.badge.amt{background:var(--navy-grad-1);color:#fff;border:none;}
+.invest-card{border:1px solid var(--border-soft);border-radius:18px;overflow:hidden;margin-bottom:16px;background:var(--bg1);box-shadow:0 6px 18px rgba(27,42,71,.06);}
+.invest-card img{width:100%;height:130px;object-fit:cover;display:block;}
+.invest-card .ic-body{padding:13px 15px;}
+.invest-card h5{font-size:14px;color:var(--navy-deep);font-family:var(--sans);font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:7px;}
+.invest-card h5 i{color:var(--gold);}
+.invest-card p{font-size:12.5px;color:var(--text-muted);line-height:1.55;}
+.section-image{border-radius:16px;overflow:hidden;margin:4px 0 16px;}
+.section-image img{width:100%;height:150px;object-fit:cover;display:block;}
+
+/* services grid */
+.serv-grid{display:flex;flex-direction:column;gap:12px;}
+.serv-card{background:var(--navy-grad-1);border-radius:18px;padding:16px 17px;color:#fff;position:relative;overflow:hidden;}
+.serv-card:nth-child(2n){background:var(--navy-grad-2);}
+.serv-card:nth-child(3n){background:var(--navy-grad-4);}
+.serv-card h3{font-family:var(--sans);font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.serv-card h3 i{font-size:15px;color:#E4C99A;}
+.serv-card .item{display:flex;gap:8px;font-size:12px;color:#E7ECF3;line-height:1.5;margin-top:5px;}
+.serv-card .item i{color:#E4C99A;font-size:10px;margin-top:4px;}
+
+/* project mini monitors */
+.proj-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border-soft);}
+.proj-item:last-child{border-bottom:none;}
+.proj-icon{width:38px;height:38px;border-radius:11px;background:var(--navy-grad-3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0;}
+.proj-info h5{font-size:13.5px;color:var(--navy-deep);font-family:var(--sans);font-weight:800;}
+.proj-info .url{font-size:10.5px;color:var(--silver);margin-bottom:3px;}
+.proj-info p{font-size:12px;color:var(--text-muted);line-height:1.5;}
+.proj-info .stack{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;color:var(--navy);background:var(--bg3);padding:2px 8px;border-radius:20px;}
+
+/* ONG hero */
+.ong-hero{text-align:center;background:var(--bg2);border-radius:20px;padding:24px 18px;margin-bottom:14px;}
+.ong-hero i.big{font-size:30px;color:var(--gold);}
+.ong-hero h4{font-size:19px;color:var(--navy-deep);margin:8px 0 2px;}
+.ong-hero .tag{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
+.ong-hero img{width:64px;margin:14px auto;display:block;}
+.ong-hero p{font-size:12.5px;line-height:1.6;color:var(--text-main);}
+
+/* contact form */
+.form-title{font-size:19px;color:var(--navy-deep);margin-bottom:14px;}
+.input-group{margin-bottom:13px;}
+.input-group label{display:block;font-size:11.5px;font-weight:700;color:var(--navy-deep);margin-bottom:5px;letter-spacing:.3px;}
+.input-group input,.input-group textarea{
+  width:100%;padding:11px 13px;border-radius:12px;border:1px solid var(--border-soft);
+  background:var(--bg2);font-family:var(--sans);font-size:13px;color:var(--text-main);resize:vertical;
+  transition:border-color .2s, background .2s;
+}
+.input-group input:focus,.input-group textarea:focus{outline:none;border-color:var(--navy);background:#fff;}
+.policy-group{display:flex;gap:9px;align-items:flex-start;margin:14px 0;}
+.policy-group input{margin-top:3px;}
+.policy-group label{font-size:11px;color:var(--text-muted);line-height:1.5;}
+.btn-submit{
+  width:100%;padding:13px;border-radius:14px;background:var(--navy-grad-1);color:#fff;
+  font-weight:700;font-size:14px;letter-spacing:.4px;box-shadow:0 12px 24px rgba(30,58,95,.3);
+  transition:transform .2s ease;
+}
+.btn-submit:active{transform:scale(.97);}
+.form-msg{margin-top:10px;font-size:12.5px;font-weight:600;text-align:center;color:var(--navy);}
+.contact-alt{display:flex;gap:10px;margin-top:20px;}
+.contact-alt a{flex:1;text-align:center;padding:12px 8px;border-radius:14px;background:var(--bg2);border:1px solid var(--border-soft);font-size:11.5px;font-weight:700;color:var(--navy-deep);display:flex;flex-direction:column;align-items:center;gap:6px;}
+.contact-alt a i{font-size:16px;color:var(--navy);}
+
+/* ============ FLOATING ACTIONS (chatbot / qr) ============ */
+.float-actions{
+  position:absolute;left:0;right:0;bottom:0;z-index:80;
+  display:flex;justify-content:center;gap:16px;
+  padding:12px 0 calc(12px + env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,rgba(255,255,255,.97) 55%,rgba(255,255,255,0));
+  pointer-events:none;
+}
+.float-btn{
+  pointer-events:auto;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--navy-grad-1);color:#fff;font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 22px rgba(30,58,95,.35);
+  transition:transform .55s cubic-bezier(.34,1.56,.64,1), background .4s ease, box-shadow .3s ease;
+  position:relative;
+}
+.float-btn span{
+  position:absolute;bottom:120%;left:50%;transform:translateX(-50%);
+  font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--navy-deep);
+  background:#fff;padding:3px 8px;border-radius:8px;white-space:nowrap;
+  opacity:0;transition:opacity .2s ease;box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+.float-btn:hover{transform:rotate(360deg) scale(1.08);background:linear-gradient(135deg,#B08D57,#E4C99A);box-shadow:0 14px 28px rgba(176,141,87,.4);}
+.float-btn:hover span{opacity:1;}
+.float-qr{background:var(--navy-grad-3);}
+
+/* ============ MODALS (chat / qr) ============ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;background:rgba(11,21,36,.72);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;backdrop-filter:blur(3px);
+}
+.modal-overlay.open{opacity:1;pointer-events:auto;}
+.modal-box{
+  background:#fff;border-radius:22px;max-width:340px;width:100%;padding:26px 22px;
+  transform:scale(.9) translateY(14px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  text-align:center;position:relative;
+}
+.modal-overlay.open .modal-box{transform:scale(1) translateY(0);}
+.modal-close{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;color:var(--text-muted);}
+.modal-box i.modal-icon{font-size:30px;color:var(--navy);margin-bottom:10px;}
+.modal-box h4{font-size:18px;color:var(--navy-deep);margin-bottom:8px;}
+.modal-box p{font-size:13px;color:var(--text-muted);line-height:1.55;margin-bottom:16px;}
+.modal-box .qr-wrap{width:190px;height:190px;margin:0 auto 14px;border-radius:14px;overflow:hidden;border:1px solid var(--border-soft);}
+.modal-box .qr-wrap img{width:100%;height:100%;object-fit:cover;}
+.modal-cta{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:14px;background:var(--navy-grad-1);color:#fff;font-weight:700;font-size:13px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= INTRO ANIMATION ================= -->
+<div id="introLoader">
+  <div class="intro-stage">
+    <div class="intro-spark"></div>
+    <div class="intro-book" id="introBook">
+      <div class="intro-cover">
+        <img src="https://elsitiodejj.github.io/imagen/perfil.jpg" alt="John Garzón" fetchpriority="high">
+        <h2>John J.<br>Garzón</h2>
+        <p>Gerente de Proyectos</p>
+        <span>Specther Group</span>
+      </div>
+    </div>
+  </div>
+  <div class="intro-hint">Toca para abrir el ebook</div>
+</div>
+
+<!-- ================= APP SHELL ================= -->
+<div id="appShell">
+  <div class="book" id="book">
+
+    <button class="nav-zone nav-left" id="navLeft" aria-label="Página anterior"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-zone nav-right" id="navRight" aria-label="Página siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="pages" id="pages">
+
+      <!-- PAGE 0 — PORTADA -->
+      <section class="page cover-page" data-index="0">
+        <div class="cover-frame">
+          <img class="cover-photo" src="https://elsitiodejj.github.io/imagen/perfil.jpg" alt="John Garzón" fetchpriority="high">
+          <div class="cover-brand">Specther Group</div>
+          <h1 class="cover-name">John J.<br>Garzón</h1>
+          <p class="cover-role">Gerente de Proyectos</p>
+          <div class="cover-divider"></div>
+          <p class="cover-tag">Portafolio ejecutivo interactivo — trayectoria, proyectos, soluciones y contacto.</p>
+        </div>
+        <div class="cover-swipe">Desliza para comenzar <i class="fa-solid fa-chevron-right"></i></div>
+      </section>
+
+      <!-- PAGE 1 — QUIÉN SOY -->
+      <section class="page" data-index="1">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Perfil · 01</span><h2>¿Quién Soy?</h2><p>Trayectoria y credenciales ejecutivas</p></div>
+          <p class="lead">Ejecutivo senior de proyectos estratégicos con más de 15 años de trayectoria liderando iniciativas de transformación empresarial, expansión internacional y optimización operativa en multinacionales de primer nivel. Especialista en la articulación e implementación de planes estratégicos de alto valor, gobernanza corporativa e integración de portafolios complejos de negocio en entornos multiculturales y altamente competitivos.</p>
+
+          <div class="block-title"><i class="fa-solid fa-bolt"></i>Fortalezas Clave</div>
+          <ul class="info-list">
+            <li><strong>Liderazgo y Disciplina Operativa:</strong> dominio de metodologías de gestión de proyectos (PMI, Agile, Lean Six Sigma) aplicado con rigor en gobernanza presupuestaria, gestión de riesgos y alineación del portafolio con los objetivos del C-Suite.</li>
+            <li><strong>Visión de Negocio Global:</strong> capacidad comprobada para cerrar la brecha entre estrategia corporativa y ejecución táctica, gestionando equipos multidisciplinarios en América Latina, Norteamérica y Europa.</li>
+            <li><strong>Gestión del Cambio y Transformación Digital:</strong> experto en reestructuración corporativa, adopción tecnológica e integración de procesos tras fusiones y adquisiciones (M&amp;A).</li>
+          </ul>
+
+          <div class="block-title"><i class="fa-solid fa-chart-line"></i>Resultados Destacados</div>
+          <ul class="info-list">
+            <li><strong>Transformación de Portafolios:</strong> reducción del 18% en costos operativos y aceleración del time-to-market en un 25%.</li>
+            <li><strong>Ejecución de Capital (CapEx):</strong> plan maestro de expansión regional con inversión superior a USD 50 M, 100% de proyectos en tiempo y bajo presupuesto.</li>
+            <li><strong>Eficiencia Operativa:</strong> gobernanza PMO global sobre 40+ proyectos simultáneos, elevando el éxito de entregables del 72% al 95%.</li>
+          </ul>
+
+          <div class="block-title"><i class="fa-solid fa-award"></i>Reconocimientos</div>
+          <ul class="info-list">
+            <li><strong>Best Strategic Execution Award</strong> por optimización de procesos de alto impacto.</li>
+            <li>Miembro activo de la red global de líderes de PMO y conferencista invitado en foros internacionales.</li>
+          </ul>
+
+          <div class="block-title"><i class="fa-solid fa-certificate"></i>Certificaciones</div>
+          <ul class="info-list">
+            <li>PMP® — Project Management Institute</li>
+            <li>PfMP® — Portfolio Management Professional</li>
+            <li>PMI-ACP® / SAFe® Agilist</li>
+            <li>Lean Six Sigma Green/Black Belt</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PAGE 2 — FORMACIÓN -->
+      <section class="page" data-index="2">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Perfil · 02</span><h2>Formación Académica</h2><p>Estudios y diplomados</p></div>
+          <div class="tl">
+            <div class="tl-row"><span class="yr">2015</span><span class="ttl">Ingeniero de Sistemas</span><span class="sub">Universidad Cun</span></div>
+            <div class="tl-row"><span class="yr">2017</span><span class="ttl">Maestría en Seguridad Informática</span><span class="sub">Universidad de Harvard</span></div>
+            <div class="tl-row"><span class="yr">2018</span><span class="ttl">Diplomado en Análisis de Datos</span><span class="sub">MIT</span></div>
+            <div class="tl-row"><span class="yr">2019</span><span class="ttl">Diplomado en Desarrollo de Aplicaciones, Software y Programación</span><span class="sub">Google</span></div>
+            <div class="tl-row"><span class="yr">2020</span><span class="ttl">Desarrollo sobre entornos Linux</span></div>
+            <div class="tl-row"><span class="yr">2021</span><span class="ttl">Diplomado de análisis técnico y trading cuantitativo</span></div>
+            <div class="tl-row"><span class="yr">2023</span><span class="ttl">Diplomado en Gestión de Portafolios y Asignación de Activos</span></div>
+            <div class="tl-row"><span class="yr">2024</span><span class="ttl">Diplomado en Mercado de Capitales y Macroeconomía Aplicada</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 3 — EXPERIENCIA -->
+      <section class="page" data-index="3">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Perfil · 03</span><h2>Experiencia</h2><p>Trayectoria profesional</p></div>
+          <div class="tl">
+            <div class="tl-row">
+              <span class="yr">2020 – Presente</span>
+              <span class="ttl">Global Senior Director of Strategic PMO &amp; Transformation</span>
+              <span class="sub">Multinacional de Consumo / Tecnología / Servicios · Bogotá, LatAm</span>
+              <p class="desc"><strong>Rol:</strong> liderazgo del portafolio estratégico regional (USD 120M) en 6 países de América Latina, con un equipo de 14 Project Managers y Consultores.</p>
+              <p class="desc"><strong>Reestructuración:</strong> redujo el OpEx en un 18% en los primeros 18 meses priorizando iniciativas de alto margen.</p>
+              <p class="desc"><strong>Transformación Digital:</strong> implementación de plataforma ERP/Cloud, 3 meses antes de lo previsto, ahorro de COP $4.500 M en costos recurrentes.</p>
+              <p class="desc"><strong>C-Suite:</strong> metodología OKR/Balanced Scorecard elevó el cumplimiento de hitos del 72% al 95%.</p>
+            </div>
+            <div class="tl-row">
+              <span class="yr">2015 – 2020</span>
+              <span class="ttl">Gerente Senior de Proyectos Estratégicos y Eficiencia</span>
+              <span class="sub">Servicios Corporativos y Real Estate / Garantías · Bogotá</span>
+              <p class="desc"><strong>CapEx:</strong> plan maestro de expansión con presupuesto ejecutado de COP $25.000 M, 100% en tiempo y presupuesto.</p>
+              <p class="desc"><strong>Integración:</strong> sinergias operativas por más de COP $2.800 M en el primer año tras fusión de dos unidades de negocio.</p>
+              <p class="desc"><strong>Riesgos:</strong> matriz de gestión que redujo desviaciones presupuestarias críticas del 12% a menos del 2%.</p>
+            </div>
+            <div class="tl-row">
+              <span class="yr">2010 – 2015</span>
+              <span class="ttl">Gerente de Proyectos de Transformación Organizacional</span>
+              <span class="sub">Grupo Multinacional de Consultoría &amp; Operaciones · Medellín / Bogotá</span>
+              <p class="desc"><strong>Lean Six Sigma:</strong> +30% de productividad operativa y -40% en tiempos de respuesta al cliente.</p>
+              <p class="desc"><strong>Metodologías ágiles:</strong> Scrum/SAFe para 120+ profesionales, acelerando el time-to-market en un 25%.</p>
+            </div>
+            <div class="tl-row">
+              <span class="yr">2008 – 2010</span>
+              <span class="ttl">Líder / Analista Senior de Proyectos y Planeación</span>
+              <span class="sub">Firma de Consultoría en Estrategia · Bogotá</span>
+              <p class="desc">Estructuración de modelos financieros, análisis de sensibilidad de mercado y seguimiento de cronogramas para proyectos de inversión de gran envergadura.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 4 — FOROS -->
+      <section class="page" data-index="4">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Perfil · 04</span><h2>Foros</h2><p>Cumbres y asociaciones globales</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-microphone-lines"></i>PMI® Global Summit</h5><p><strong>Perfil:</strong> evento insignia mundial para la alta dirección de proyectos y portafolios. Conferencista/asistente recurrente sobre gobernanza CapEx/OpEx.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-earth-americas"></i>Global Project Management Forum</h5><p><strong>Perfil:</strong> foro internacional sobre mega-proyectos, sostenibilidad e innovación en entregas estratégicas.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-landmark"></i>The PMO Conference (Londres/Global)</h5><p><strong>Perfil:</strong> escala internacional, dirección y valor estratégico de las Oficinas de Gestión de Proyectos.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-handshake"></i>IASP</h5><p><strong>Perfil:</strong> asociación mundial líder en planificación y ejecución estratégica. Miembro activo de la International Association for Strategy Professionals.</p></div>
+        </div>
+      </section>
+
+      <!-- PAGE 5 — PROYECTOS: BIENES RAÍCES -->
+      <section class="page" data-index="5">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Proyectos · 05</span><h2>Bienes Raíces</h2><p>Desarrollo inmobiliario en Colombia</p></div>
+          <p class="lead">Portafolio estructurado bajo criterios de rentabilidad, diversificación geográfica y sostenibilidad, con proyectos en distintas fases de ejecución.</p>
+
+          <div class="invest-card">
+            <img loading="lazy" src="https://elsitiodejj.github.io/imagen/hotel-cartagena.jpg" alt="Hotel Boutique Cartagena">
+            <div class="ic-body">
+              <h5><i class="fa-solid fa-hotel"></i>Hotel Boutique · Cartagena</h5>
+              <div class="badge-row"><span class="badge amt">USD $4.0 M</span><span class="badge">60 habitaciones</span><span class="badge">Inicio 2027</span></div>
+              <p>Proyecto hotelero para el segmento turístico de alto tráfico de la ciudad, con inicio de obra proyectado para 2027.</p>
+            </div>
+          </div>
+
+          <div class="invest-card">
+            <img loading="lazy" src="https://elsitiodejj.github.io/imagen/edificio-bogota.jpg" alt="Edificio Residencial Bogotá">
+            <div class="ic-body">
+              <h5><i class="fa-solid fa-building"></i>Edificio Residencial · Bogotá</h5>
+              <div class="badge-row"><span class="badge amt">USD $1.8 M</span><span class="badge">10 aptos + 4 locales</span><span class="badge">Inicio 2027</span></div>
+              <p>Edificio residencial con parqueaderos y locales comerciales, en fase de desarrollo.</p>
+            </div>
+          </div>
+
+          <div class="invest-card">
+            <img loading="lazy" src="https://elsitiodejj.github.io/imagen/renta-corta-bogota.jpg" alt="Renta Corta Bogotá">
+            <div class="ic-body">
+              <h5><i class="fa-solid fa-key"></i>Renta Corta · Aparta-estudios Bogotá</h5>
+              <div class="badge-row"><span class="badge">60 unidades</span><span class="badge">Inicio 2028</span></div>
+              <p>Edificio diseñado para operación de renta corta tipo Airbnb, en fase de desarrollo.</p>
+            </div>
+          </div>
+
+          <div class="invest-card">
+            <img loading="lazy" src="https://elsitiodejj.github.io/imagen/hacienda-autosuficiente.jpg" alt="Hacienda Autosuficiente">
+            <div class="ic-body">
+              <h5><i class="fa-solid fa-seedling"></i>Hacienda Autosuficiente</h5>
+              <div class="badge-row"><span class="badge amt">USD $2.0 M</span><span class="badge">Inicio 2026</span><span class="badge">Regenerativo</span></div>
+              <p>Proyecto agropecuario regenerativo: ~800 cabezas de ganado, 400 cerdos, 4.000 gallinas ponedoras y 2.000 pollos de engorde, planta propia de concentrados, energías renovables y reciclaje de agua.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 6 — INVERSIONES DE CAPITAL -->
+      <section class="page" data-index="6">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Proyectos · 06</span><h2>Inversiones de Capital</h2><p>Asignación diversificada de activos</p></div>
+          <p class="lead">Estrategia entre mercados digitales, refugios de valor tradicionales, renta fija soberana y renta variable, orientada a la preservación y crecimiento del capital a largo plazo.</p>
+          <div class="section-image"><img loading="lazy" src="https://elsitiodejj.github.io/imagen/inversiones-capital.jpg" alt="Inversiones de Capital"></div>
+          <div class="mini-card"><h5><i class="fa-brands fa-bitcoin"></i>Criptomonedas</h5><p>Exposición estratégica a activos digitales de alta capitalización (Bitcoin, Ethereum, stablecoins) como cobertura frente a la devaluación fiat, con gestión activa del riesgo y custodia en cold wallets.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-coins"></i>Oro</h5><p>Oro físico y ETFs respaldados por metal como reserva de valor histórica frente a inflación y volatilidad de mercados globales.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-landmark"></i>Bonos del Estado</h5><p>Renta fija soberana orientada a ingresos estables y preservación de capital como componente de bajo riesgo.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-chart-line"></i>Trading de Acciones (NYSE)</h5><p>Operación activa combinando análisis técnico y fundamental en empresas de alta liquidez y capitalización.</p></div>
+        </div>
+      </section>
+
+      <!-- PAGE 7 — PROYECTOS DE TECNOLOGÍA -->
+      <section class="page" data-index="7">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Proyectos · 07</span><h2>Proyectos de Tecnología</h2><p>De la ciberseguridad a la IA</p></div>
+          <p class="lead">Portafolio tecnológico enfocado en proteger, escalar e inteligentizar negocios digitales, con resultados medibles.</p>
+          <div class="section-image"><img loading="lazy" src="https://elsitiodejj.github.io/imagen/proyectos-tecnologia.jpg" alt="Proyectos de Tecnología"></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-shield-halved"></i>Ciberseguridad</h5><p>Estrategias de seguridad informática, análisis de vulnerabilidades y arquitecturas de protección de datos alineadas a estándares internacionales.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-rocket"></i>Crecimiento de Páginas y Apps</h5><p>Auditorías técnicas, optimización de rendimiento y hoja de ruta de producto para prospectos en etapa temprana.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-brain"></i>Desarrollo en Inteligencia Artificial</h5><p>Identificación de casos de uso e implementación de modelos y agentes que optimizan la operación del negocio.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-hashtag"></i>SEO y Marketing en Redes</h5><p>Posicionamiento orgánico y presencia en redes para incrementar visibilidad de marca, tráfico y conversión.</p></div>
+        </div>
+      </section>
+
+      <!-- PAGE 8 — ONG -->
+      <section class="page" data-index="8">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Proyectos · 08</span><h2>ONG</h2><p>Fundación Una Buena Causa</p></div>
+          <div class="ong-hero">
+            <i class="fa-solid fa-hand-holding-heart big"></i>
+            <h4>Fundación</h4>
+            <span class="tag">Una Buena Causa</span>
+            <img loading="lazy" src="https://elsitiodejj.github.io/imagen/logo-fundacion.png" alt="Logo Fundación Una Buena Causa">
+            <p>Organización sin ánimo de lucro que trabaja en cuatro frentes: educación para niños vulnerables, atención al adulto mayor, acompañamiento a madres cabeza de familia y apoyo integral a emprendedores.</p>
+          </div>
+          <div class="mini-card"><h5><i class="fa-solid fa-graduation-cap"></i>Educación para Niños Vulnerables</h5><p>Refuerzo escolar, alimentación y acompañamiento psicosocial para romper ciclos de pobreza.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-person-cane"></i>Atención al Adulto Mayor</h5><p>Cuidado, acompañamiento y bienestar físico, emocional y social.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-people-roof"></i>Madres Cabeza de Familia</h5><p>Redes de apoyo, orientación emocional y herramientas prácticas de autonomía.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-hand-holding-dollar"></i>Apoyo a Emprendedores</h5><p>Capital semilla, asesoría y acompañamiento continuo para proyectos sostenibles.</p></div>
+        </div>
+      </section>
+
+      <!-- PAGE 9 — SOLUCIONES GLOBALES -->
+      <section class="page" data-index="9">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Soluciones · 09</span><h2>Soluciones Globales</h2><p>Portafolio de servicios especializados</p></div>
+          <div class="serv-grid">
+            <div class="serv-card"><h3><i class="fa-solid fa-brain"></i>Ingeniería de IA</h3>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Modelos Fundacionales &amp; LLMs Corporativos</span></div>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Agentes de automatización de flujos B2B</span></div>
+            </div>
+            <div class="serv-card"><h3><i class="fa-solid fa-code"></i>Desarrollo Frontend</h3>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Estructuras robustas bajo metodología BEM CSS</span></div>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Optimización milimétrica de Core Web Vitals</span></div>
+            </div>
+            <div class="serv-card"><h3><i class="fa-solid fa-shield-cat"></i>Ciberseguridad</h3>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Hacking ético preventivo y análisis perimetral</span></div>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Arquitecturas seguras basadas en Zero-Trust</span></div>
+            </div>
+            <div class="serv-card"><h3><i class="fa-solid fa-cloud"></i>Cloud &amp; DevOps</h3>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Infraestructura elástica de alta disponibilidad</span></div>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Despliegues automatizados mediante CI/CD</span></div>
+            </div>
+            <div class="serv-card"><h3><i class="fa-solid fa-chart-line"></i>Data Analytics</h3>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Procesamiento de datos a gran escala</span></div>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Dashboards predictivos para decisiones TI</span></div>
+            </div>
+            <div class="serv-card"><h3><i class="fa-solid fa-mobile-button"></i>Mobile Compilations</h3>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Empaquetado de código HTML a entornos Android</span></div>
+              <div class="item"><i class="fa-solid fa-circle"></i><span>Distribución óptima de instalables ligeros</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 10 — ECOSISTEMA DE PROYECTOS -->
+      <section class="page" data-index="10">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Soluciones · 10</span><h2>Ecosistema Proyectos</h2><p>Asesorías y desarrollos activos</p></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-solid fa-city"></i></div><div class="proj-info"><h5>Expansiva UI</h5><div class="url">expansiva.com — Plataforma Real Estate Guarantor</div><p>Calculadora exacta, Core Vitals &lt;50ms, fianza digital garantizada.</p><span class="stack">Next.js + Tailwind</span></div></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-solid fa-utensils"></i></div><div class="proj-info"><h5>AMERO App</h5><div class="url">amero.com — Dark Kitchen Tradicional</div><p>Menú digital autoactualizable, logística de dark kitchen, PWA 100% nativa.</p><span class="stack">React + CSS BEM</span></div></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-solid fa-shop"></i></div><div class="proj-info"><h5>Don Chori POS</h5><div class="url">donchori.com — Control Comercial Multi-Punto</div><p>5 puntos en Valledupar, comisiones en tiempo real.</p><span class="stack">Vue.js + Node.js</span></div></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-solid fa-file-signature"></i></div><div class="proj-info"><h5>Legales Network</h5><div class="url">asesoriaslegales.com — Ecosistema de Asesorías Legales</div><p>Intake sin documentos, estudio eficiente, respaldo jurídico total.</p><span class="stack">Angular + Go</span></div></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-solid fa-cube"></i></div><div class="proj-info"><h5>Specther Lab</h5><div class="url">specther.com — Agencia de Cómputo Avanzado</div><p>Web 3D GPU/WebGL, infraestructura de edge nodes, Core AI con LLM propio.</p><span class="stack">Vanilla JS + CSS</span></div></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-brands fa-android"></i></div><div class="proj-info"><h5>APK Compiler</h5><div class="url">htmltoapk.com — Conversor de Proyectos Web</div><p>Empaquetado HTML a APK, carga por zip y compilación instalable.</p><span class="stack">Electron + Rust</span></div></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-solid fa-key"></i></div><div class="proj-info"><h5>Zero Shield</h5><div class="url">zeroshield.io — Autenticación e Identidad</div><p>OAuth3 descentralizado, biometría WebAuthn, logs de auditoría.</p><span class="stack">Go + WebAssembly</span></div></div>
+
+          <div class="proj-item"><div class="proj-icon"><i class="fa-solid fa-wave-square"></i></div><div class="proj-info"><h5>StreamFlow</h5><div class="url">streamflow.dev — Procesamiento de Eventos</div><p>Motor ETL con auto-mapeo, Kafka de baja latencia, análisis predictivo.</p><span class="stack">Python + Kafka</span></div></div>
+        </div>
+      </section>
+
+      <!-- PAGE 11 — MOTORHOME + CASA MODULAR -->
+      <section class="page" data-index="11">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Soluciones · 11</span><h2>Vida Autosuficiente</h2><p>Motorhome y casa modular</p></div>
+
+          <div class="block-title"><i class="fa-solid fa-caravan"></i>Motorhome</div>
+          <div class="section-image"><img loading="lazy" src="https://elsitiodejj.github.io/imagen/motorhome.jpg" alt="Motorhome"></div>
+          <p class="lead" style="font-size:13px;">Casa rodante pensada para la autonomía total: expediciones prolongadas, turismo de aventura o refugio móvil ante emergencias.</p>
+          <div class="mini-card"><h5><i class="fa-solid fa-solar-panel"></i>Autonomía Energética</h5><p>Paneles solares y banco de baterías, sin depender de la red eléctrica.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-droplet"></i>Reserva y Tratamiento de Agua</h5><p>Tanques y filtración para agua potable en trayectos prolongados.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-road"></i>Diseño Todo Terreno</h5><p>Chasis reforzado y suspensión para terrenos exigentes.</p></div>
+
+          <div class="block-title"><i class="fa-solid fa-house-chimney"></i>Casa Modular</div>
+          <div class="section-image"><img loading="lazy" src="https://elsitiodejj.github.io/imagen/casa-modular.jpg" alt="Casa Modular"></div>
+          <p class="lead" style="font-size:13px;">Vivienda modular de 6 x 3 metros con habitación integrada, montable en menos de un día sin mano de obra especializada.</p>
+          <div class="mini-card"><h5><i class="fa-solid fa-bolt"></i>Montaje Rápido</h5><p>Ensamble por paneles prediseñados, sin herramientas complejas.</p></div>
+          <div class="mini-card"><h5><i class="fa-solid fa-shield-halved"></i>Materiales Resistentes</h5><p>Estructura duradera para distintas condiciones climáticas.</p></div>
+        </div>
+      </section>
+
+      <!-- PAGE 12 — CONTACTO -->
+      <section class="page" data-index="12">
+        <div class="page-scroll">
+          <div class="page-eyebrow"><span class="num">Contacto · 12</span><h2>Hablemos</h2><p>Elige cómo prefieres comunicarte</p></div>
+
+          <h3 class="form-title">Iniciar Consultoría</h3>
+          <form class="contact-form" id="contact-form" action="https://formsubmit.co/60ed378fc97eaab21d6b9b75a66d2899" method="POST">
+            <input type="hidden" name="_subject" value="Nueva solicitud de consultoría — Specther">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+            <div class="input-group"><label for="txt-name">Nombre Completo</label><input type="text" id="txt-name" name="Nombre completo" placeholder="Ej. Carlos Mendoza" required></div>
+            <div class="input-group"><label for="txt-phone">Celular / WhatsApp</label><input type="tel" id="txt-phone" name="Celular / WhatsApp" placeholder="Ej. 300 123 4567" required></div>
+            <div class="input-group"><label for="txt-email">Correo Electrónico</label><input type="email" id="txt-email" name="Correo electrónico" placeholder="carlos@empresa.com" required></div>
+            <div class="input-group"><label for="txt-subject">Asunto</label><textarea id="txt-subject" name="Asunto" rows="3" placeholder="Describe brevemente los requisitos de tu proyecto..." required></textarea></div>
+
+            <div class="policy-group">
+              <input type="checkbox" id="chk-policy" required>
+              <label for="chk-policy">Autorizo el tratamiento de mis datos de acuerdo con la norma colombiana de protección de datos (Ley 1581 de 2012).</label>
+            </div>
+            <button type="submit" class="btn-submit">Enviar Solicitud</button>
+            <p id="form-msg" class="form-msg"></p>
+          </form>
+
+          <div class="contact-alt">
+            <a href="tel:+573024196999"><i class="fa-solid fa-phone-flip"></i>Llamar</a>
+            <a href="https://wa.me/573024196999" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.pages -->
+
+    <div class="book-progress"><div class="book-progress-bar" id="progressBar"></div></div>
+  </div><!-- /.book -->
+
+  <div class="float-actions">
+    <button class="float-btn float-chat" id="btnChat" aria-label="Abrir chat"><i class="fa-solid fa-comments"></i><span>Chat</span></button>
+    <button class="float-btn float-qr" id="btnQr" aria-label="Ver código QR"><i class="fa-solid fa-qrcode"></i><span>QR</span></button>
+  </div>
+</div><!-- /#appShell -->
+
+<!-- CHAT MODAL -->
+<div class="modal-overlay" id="chatModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close><i class="fa-solid fa-xmark"></i></button>
+    <i class="fa-solid fa-comments modal-icon"></i>
+    <h4>Conversemos</h4>
+    <p>Escríbenos directamente por WhatsApp y con gusto resolvemos tus preguntas sobre proyectos, soluciones o inversiones.</p>
+    <a class="modal-cta" href="https://wa.me/573024196999" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i>Abrir WhatsApp</a>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close><i class="fa-solid fa-xmark"></i></button>
+    <i class="fa-solid fa-qrcode modal-icon"></i>
+    <h4>Contacto Directo</h4>
+    <div class="qr-wrap"><img id="qrImg" alt="Código QR de contacto" loading="lazy"></div>
+    <p>Escanea para escribir directamente por WhatsApp.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ---------- INTRO ----------
+  var introLoader = document.getElementById('introLoader');
+  var appShell = document.getElementById('appShell');
+  function finishIntro(){
+    introLoader.classList.add('hide');
+    appShell.classList.add('ready');
+    setTimeout(function(){ introLoader.style.display='none'; }, 750);
+  }
+  window.addEventListener('load', function(){
+    setTimeout(finishIntro, 2650);
+  });
+  // safety fallback in case load event is delayed
+  setTimeout(finishIntro, 4200);
+
+  // ---------- BOOK PAGE FLIP ----------
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var total = pages.length;
+  var current = 0;
+  pages.forEach(function(p, i){ p.style.zIndex = total - i; });
+
+  var progressBar = document.getElementById('progressBar');
+  function updateProgress(){
+    var pct = (current / (total - 1)) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  function goNext(){
+    if (current < total - 1){
+      pages[current].classList.add('flipped');
+      current++;
+      updateProgress();
+    }
+  }
+  function goPrev(){
+    if (current > 0){
+      current--;
+      pages[current].classList.remove('flipped');
+      updateProgress();
+    }
+  }
+  updateProgress();
+
+  document.getElementById('navRight').addEventListener('click', goNext);
+  document.getElementById('navLeft').addEventListener('click', goPrev);
+
+  // cover tap-to-advance
+  document.querySelector('.cover-page').addEventListener('click', function(e){
+    if (!e.target.closest('.nav-zone')) goNext();
+  });
+
+  // keyboard
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight') goNext();
+    if (e.key === 'ArrowLeft') goPrev();
+  });
+
+  // swipe
+  var touchStartX = null;
+  var bookEl = document.getElementById('book');
+  bookEl.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+  bookEl.addEventListener('touchend', function(e){
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 55){ dx < 0 ? goNext() : goPrev(); }
+    touchStartX = null;
+  }, {passive:true});
+
+  // ---------- CONTACT FORM ----------
+  var form = document.getElementById('contact-form');
+  var formMsg = document.getElementById('form-msg');
+  if (form){
+    form.addEventListener('submit', function(){
+      var btn = form.querySelector('.btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+    });
+  }
+
+  // ---------- MODALS ----------
+  var chatModal = document.getElementById('chatModal');
+  var qrModal = document.getElementById('qrModal');
+  document.getElementById('btnChat').addEventListener('click', function(){ chatModal.classList.add('open'); });
+  document.getElementById('btnQr').addEventListener('click', function(){
+    var qrImg = document.getElementById('qrImg');
+    if (!qrImg.src){
+      var data = encodeURIComponent('https://wa.me/573024196999');
+      qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=380x380&data=' + data;
+    }
+    qrModal.classList.add('open');
+  });
+  document.querySelectorAll('[data-close]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.closest('.modal-overlay').classList.remove('open');
+    });
+  });
+  [chatModal, qrModal].forEach(function(m){
+    m.addEventListener('click', function(e){ if (e.target === m) m.classList.remove('open'); });
+  });
+})();
+</script>
+</body>
+</html>
